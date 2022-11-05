@@ -1,0 +1,10 @@
+node_modules
+artifacts
+cache
+coverage*
+gasReporterOutput.json
+typechain
+typechain-types
+lib/ds-test
+lib/open-zeppelin 
+
