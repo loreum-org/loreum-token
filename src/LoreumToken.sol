@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 pragma solidity ^0.8.16;
 
-import { ERC20 } "open-zeppelin/contracts/token/ERC20/ERC20.sol";
-import { Ownable } "open-zeppelin/contracts/access/Ownable.sol";
+import { ERC20 } from "open-zeppelin/contracts/token/ERC20/ERC20.sol";
+import { Ownable } from "open-zeppelin/contracts/access/Ownable.sol";
 
 import { ILoreumToken } from "./ILoreumToken.sol";
 
@@ -60,7 +60,7 @@ contract LoreumToken is ERC20, Ownable, ILoreumToken {
     /// @param  amount  amount to mint
     /// @return status  boolean of success or failure
 
-    function mint(address account, uint256) external override onlyOwner returns (bool status) {
+    function mint(address account, uint256 amount) external override onlyOwner returns (bool status) {
         if (totalSupply() + amount <= _SUPPLY_CAP) {
             _mint(account, amount);
             return true;
@@ -68,7 +68,7 @@ contract LoreumToken is ERC20, Ownable, ILoreumToken {
         return false;
     }
 
-    function SUPPLY_CAP() external view override returns (uint256) {
+    function SUPPLY_CAP() external view returns (uint256) {
         return _SUPPLY_CAP;
     }
 }
