@@ -1,18 +1,20 @@
 import type { HardhatUserConfig } from "hardhat/types";
-// import { task } from "hardhat/config";
+import { task } from "hardhat/config";
 import fs from "fs";
 
 import "@nomiclabs/hardhat-etherscan";
+import "@nomiclabs/hardhat-waffle";
 import "@typechain/hardhat";
 import "hardhat-abi-exporter";
+import "hardhat-gas-reporter";
 import "hardhat-preprocessor";
 import "solidity-coverage";
 import "dotenv/config";
 
-// task("accounts", "Prints the list of accounts", async (_args, hre) => {
-//   const accounts = await hre.ethers.getSigners();
-//   accounts.forEach(async (account) => console.info(account.address));
-// });
+task("accounts", "Prints the list of accounts", async (_args, hre) => {
+  const accounts = await hre.ethers.getSigners();
+  accounts.forEach(async (account) => console.info(account.address));
+});
 
 const config: HardhatUserConfig = {
   defaultNetwork: "hardhat",
@@ -47,7 +49,7 @@ const config: HardhatUserConfig = {
     ],
   },
   preprocess: {
-    eachLine: () => ({
+    eachLine: (hre) => ({
       transform: (line: string) => {
         if (line.match(/^\s*import /i)) {
           for (const [from, to] of getRemappings()) {
@@ -74,6 +76,10 @@ const config: HardhatUserConfig = {
     flat: true,
     pretty: false,
     except: ["test*", "open-zeppelin*", "uniswap*"],
+  },
+  gasReporter: {
+    enabled: !!process.env.REPORT_GAS,
+    excludeContracts: ["test*", "open-zeppelin*"],
   },
 };
 
