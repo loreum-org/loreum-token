@@ -12,7 +12,6 @@ import { TestUtilities } from "../../lib/contract-utils/src/TestUtilities.sol";
 
 contract Deployment is Test, AddressRegistry, TestUtilities {
 
-
     LoreumToken LORE;
 
     address payable[] internal users;
@@ -25,7 +24,7 @@ contract Deployment is Test, AddressRegistry, TestUtilities {
 
     function setUp() public {
 
-        /// NOTE Create the Loreum Token Contract
+        /// @dev Create the Loreum Token Contract
         LORE = new LoreumToken(address(this), 10_000_000 * WAD, SUPPLY_CAP);
     }
 
@@ -41,7 +40,7 @@ contract Deployment is Test, AddressRegistry, TestUtilities {
 
     function test_LoreumToken_mint() public {
 
-        /// NOTE Test the mint function
+        /// @dev Test the mint function
         // Mint some tokens to Bones
         assertEq(LORE.mint(BONES, 10_000 * WAD), true);
         assertEq(LORE.balanceOf(BONES), 10_000 * WAD);
