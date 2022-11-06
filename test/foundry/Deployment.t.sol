@@ -14,8 +14,6 @@ contract Deployment is Test, AddressRegistry, TestUtilities {
 
     LoreumToken LORE;
 
-    address payable[] internal users;
-
     uint256 SUPPLY_CAP = 100_000_000 * WAD;
     uint256 PRE_MINT   = 10_000_000 * WAD;
 
