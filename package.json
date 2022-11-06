@@ -1,7 +1,7 @@
 {
-  "name": "@loreum/lore",
+  "name": "@loreum/lore-token",
   "version": "0.1.0",
-  "description": "LORE POC",
+  "description": "Lore Token",
   "author": "Loreum",
   "license": "MIT",
   "private": false,
@@ -18,10 +18,10 @@
     "node": ">=12"
   },
   "homepage": "https://loreum.org",
-  "bugs": "https://github.com/loreum-org/lore/issues",
+  "bugs": "https://github.com/loreum-org/lore-token/issues",
   "repository": {
     "type": "git",
-    "url": "https://github.com/loreum-org/lore.git"
+    "url": "https://github.com/loreum-org/lore-token.git"
   },
   "publishConfig": {
     "access": "public",
