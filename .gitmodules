@@ -6,3 +6,6 @@
 	path = lib/open-zeppelin
 	url = https://github.com/OpenZeppelin/openzeppelin-contracts
 	branch = release-v4.8
+[submodule "lib/contract-utils"]
+	path = lib/contract-utils
+	url = git@github.com:loreum-org/contract-utils
