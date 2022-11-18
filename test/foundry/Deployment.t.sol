@@ -28,7 +28,7 @@ contract Deployment is Test, AddressRegistry, TestUtilities {
 
     function test_LoreumToken_init() public {
 
-        assertEq(LORE.SUPPLY_CAP(), SUPPLY_CAP);
+        assertEq(LORE.cap(), SUPPLY_CAP);
         assertEq(LORE.totalSupply(), PRE_MINT);
         assertEq(LORE.balanceOf(address(this)), PRE_MINT);
 

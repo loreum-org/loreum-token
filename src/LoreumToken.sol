@@ -68,7 +68,7 @@ contract LoreumToken is ERC20, Ownable, ILoreumToken {
         return false;
     }
 
-    function SUPPLY_CAP() external view returns (uint256) {
+    function cap() external view returns (uint256) {
         return _SUPPLY_CAP;
     }
 }
