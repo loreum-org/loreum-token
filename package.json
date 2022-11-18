@@ -29,6 +29,7 @@
   },
   "scripts": {
     "deploy:local": "hardhat run --network localhost script/hardhat/deploy.ts",
+    "deploy:goerli": "hardhat run --network goerli script/hardhat/deploy.ts",
     "chain": "hardhat node",
     "compile": "hardhat compile",
     "compile:force": "hardhat compile --force",

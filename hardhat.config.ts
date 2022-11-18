@@ -28,9 +28,15 @@ const config: HardhatUserConfig = {
       },
       gasPrice: "auto",
     },
+    goerli: {
+      url: process.env.GORELI_RPC_URL || '',
+      accounts: [process.env.GOERLI_DEPLOYER_KEY || ''],
+    },
   },
   etherscan: {
-    apiKey: process.env.ETHERSCAN_KEY,
+    apiKey: {
+      goerli: process.env.ETHERSCAN_API_KEY || ''
+    }
   },
   solidity: {
     compilers: [
