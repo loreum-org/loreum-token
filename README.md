@@ -36,37 +36,16 @@ npx hardhat verify --network goerli <address> <unlock time>
 
 **Goerli**
 
+https://goerli.etherscan.io/address/0x481e7E976B7053bc7a95F26ec8b8688020E1F9ee
+
 ```
-#1
-npx hardhat verify --network goerli 0xDB0072e4741624cBE881579aaA6425F8a8C85F5e
- 0xA9bF0E34859870cF14102dC6894a7B2AC3ceDf83 10000000000000000000000000 1000000000000000000000000000 
-Generating typings for: 7 artifacts in dir: typechain-types for target: ethers-v5
-Successfully generated 32 typings!
-Compiled 7 Solidity files successfully
-Compiling your contract excluding unrelated contracts did not produce identical bytecode.
-Trying again with the full solc input used to compile and deploy it.
-This means that unrelated contracts may be displayed on Etherscan...
+params [
+  '0xA9bF0E34859870cF14102dC6894a7B2AC3ceDf83',
+  '1000000000000000000000000',
+  '10000000000000000000000000'
+]
 
-Successfully submitted source code for contract
-src/LoreumToken.sol:LoreumToken at 0xDB0072e4741624cBE881579aaA6425F8a8C85F5e
-for verification on the block explorer. Waiting for verification result...
-
-Successfully verified full build of contract LoreumToken on Etherscan.
-https://goerli.etherscan.io/address/0xDB0072e4741624cBE881579aaA6425F8a8C85F5e#code
-
-#2
-npx hardhat verify --constructor-args ./script/hardhat/fixtures.ts 0x4C5a6A9871D59A71766822B99633CF332569aD95 --network goerli
-Generating typings for: 7 artifacts in dir: typechain-types for target: ethers-v5
-Successfully generated 32 typings!
-Compiled 7 Solidity files successfully
-Compiling your contract excluding unrelated contracts did not produce identical bytecode.
-Trying again with the full solc input used to compile and deploy it.
-This means that unrelated contracts may be displayed on Etherscan...
-
-Successfully submitted source code for contract
-src/LoreumToken.sol:LoreumToken at 0x4C5a6A9871D59A71766822B99633CF332569aD95
-for verification on the block explorer. Waiting for verification result...
-
-Successfully verified full build of contract LoreumToken on Etherscan.
-https://goerli.etherscan.io/address/0x4C5a6A9871D59A71766822B99633CF332569aD95#code
+npx hardhat verify --constructor-args \ 
+  ./script/hardhat/goerli.ts 0x481e7E976B7053bc7a95F26ec8b8688020E1F9ee \
+  --network goerli
 ```
