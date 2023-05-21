@@ -2,6 +2,7 @@
 pragma solidity ^0.8.18;
 
 import { ERC20 } from "openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
+import { ERC20Permit } from "openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Permit.sol";
 import { Ownable } from "openzeppelin-contracts/contracts/access/Ownable.sol";
 
 
@@ -18,7 +19,7 @@ import { Ownable } from "openzeppelin-contracts/contracts/access/Ownable.sol";
 //   ▀▀▀▀▀▀▀▀▀▀▀ ▀▀▀▀▀▀▀▀▀▀▀ ▀         ▀ ▀▀▀▀▀▀▀▀▀▀▀ ▀▀▀▀▀▀▀▀▀▀▀ ▀         ▀ 
 //                                                                           
 
-contract LoreumToken is ERC20, Ownable {
+contract LoreumToken is ERC20, ERC20Permit, Ownable {
     
     // ---------------------
     //    State Variables
@@ -40,7 +41,7 @@ contract LoreumToken is ERC20, Ownable {
         address premintReceiver, 
         uint256 premintAmount, 
         uint256 _maxSupply
-    ) ERC20("Loreum", "LORE") {
+    ) ERC20("Loreum", "LORE") ERC20Permit("Loreum") {
         require(_maxSupply >= premintAmount, "LoreumToken::constructor() _maxSupply < premintAmount");
         _mint(premintReceiver, premintAmount);
         maxSupply = _maxSupply;
@@ -53,8 +54,8 @@ contract LoreumToken is ERC20, Ownable {
     // ---------------
 
     /// @notice Mint LORE to the provided account.
-    /// @param  account address to recieve tokens
-    /// @param  amount  amount to mint
+    /// @param  account The address that will receive LORE.
+    /// @param  amount  The amount to mint.
     function mint(address account, uint256 amount) external onlyOwner {
         require(totalSupply() + amount <= maxSupply, "LoreumToken::mint() totalSupply() + amount > maxSupply");
         _mint(account, amount);
