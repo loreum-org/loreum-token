@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 pragma solidity ^0.8.16;
 
-import { ERC20 } from "open-zeppelin/contracts/token/ERC20/ERC20.sol";
-import { Ownable } from "open-zeppelin/contracts/access/Ownable.sol";
+import { ERC20 } from "openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
+import { Ownable } from "openzeppelin-contracts/contracts/access/Ownable.sol";
 
 import { ILoreumToken } from "./ILoreumToken.sol";
 

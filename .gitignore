@@ -18,6 +18,3 @@ typechain-types
 cache
 artifacts
 abis/
-
-# Others 
-lib
