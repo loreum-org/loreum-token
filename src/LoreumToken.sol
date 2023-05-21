@@ -1,13 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-pragma solidity ^0.8.16;
+pragma solidity ^0.8.18;
 
 import { ERC20 } from "openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
 import { Ownable } from "openzeppelin-contracts/contracts/access/Ownable.sol";
 
-import { ILoreumToken } from "./ILoreumToken.sol";
-
-/// @title LoreumToken LORE
-/// @notice
 
 //   ▄           ▄▄▄▄▄▄▄▄▄▄▄ ▄▄▄▄▄▄▄▄▄▄▄ ▄▄▄▄▄▄▄▄▄▄▄ ▄         ▄ ▄▄       ▄▄ 
 //  ▐░▌         ▐░░░░░░░░░░░▐░░░░░░░░░░░▐░░░░░░░░░░░▐░▌       ▐░▐░░▌     ▐░░▌
@@ -22,53 +18,46 @@ import { ILoreumToken } from "./ILoreumToken.sol";
 //   ▀▀▀▀▀▀▀▀▀▀▀ ▀▀▀▀▀▀▀▀▀▀▀ ▀         ▀ ▀▀▀▀▀▀▀▀▀▀▀ ▀▀▀▀▀▀▀▀▀▀▀ ▀         ▀ 
 //                                                                           
 
-
-contract LoreumToken is ERC20, Ownable, ILoreumToken {
+contract LoreumToken is ERC20, Ownable {
     
     // ---------------------
     //    State Variables
     // ---------------------
 
-    uint256 private immutable _SUPPLY_CAP;
+    uint256 public immutable maxSupply;
+
+
 
     // -----------------
     //    Constructor
     // ----------------- 
 
-    /// @notice Constructor
-    /// @param  _premintHolder address of the premint Holder
-    /// @param  _premintAmount the amount to Premint
-    /// @param  _cap           supply is capped at this value
-
+    /// @notice Constructor for LoreumToken.
+    /// @param  premintReceiver The address that receives the pre-minted LORE tokens.
+    /// @param  premintAmount The amount to pre-mint.
+    /// @param  _maxSupply The maximum supply for LORE.
     constructor(
-        address _premintHolder,
-        uint256 _premintAmount,
-        uint256 _cap
-    ) ERC20("Loreum Token", "LORE") {
-        require(_cap > _premintAmount, "LoreumToken::constructor cap < premintAmount");
-
-        _mint(_premintHolder, _premintAmount);
-        _SUPPLY_CAP = _cap;
+        address premintReceiver, 
+        uint256 premintAmount, 
+        uint256 _maxSupply
+    ) ERC20("Loreum", "LORE") {
+        require(_maxSupply >= premintAmount, "LoreumToken::constructor() _maxSupply < premintAmount");
+        _mint(premintReceiver, premintAmount);
+        maxSupply = _maxSupply;
     }
+
+
 
     // ---------------
     //    Functions
     // ---------------
 
-    /// @notice Mint LORE Tokens
+    /// @notice Mint LORE to the provided account.
     /// @param  account address to recieve tokens
     /// @param  amount  amount to mint
-    /// @return status  boolean of success or failure
-
-    function mint(address account, uint256 amount) external override onlyOwner returns (bool status) {
-        if (totalSupply() + amount <= _SUPPLY_CAP) {
-            _mint(account, amount);
-            return true;
-        }
-        return false;
+    function mint(address account, uint256 amount) external onlyOwner {
+        require(totalSupply() + amount <= maxSupply, "LoreumToken::mint() totalSupply() + amount > maxSupply");
+        _mint(account, amount);
     }
 
-    function SUPPLY_CAP() external view returns (uint256) {
-        return _SUPPLY_CAP;
-    }
 }
