@@ -27,10 +27,9 @@
         ]
       }
     ],
-    "newline-after-function": [
-      "error",
-      "never"
-    ]
+    "newline-after-function": ["off"],
+    "camelcase": ["warn"],
+    "no-process-exit": ["off"]
   },
   "settings": {
     "node": {
