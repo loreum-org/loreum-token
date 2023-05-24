@@ -21,7 +21,7 @@ npm run compile
 npm run chain
 
 # In a new Terminal, deploy contracts
-npm run deploy:local
+npm run deploy
 
 ```
 
