@@ -1,5 +1,5 @@
 {
-  "name": "@loreum/lore-token",
+  "name": "@loreum/loreum-token",
   "version": "0.1.0",
   "description": "Loreum Token",
   "author": "Loreum",
@@ -18,10 +18,10 @@
     "node": ">=16"
   },
   "homepage": "https://loreum.org",
-  "bugs": "https://github.com/loreum-org/lore-token/issues",
+  "bugs": "https://github.com/loreum-org/loreum-token/issues",
   "repository": {
     "type": "git",
-    "url": "https://github.com/loreum-org/lore-token.git"
+    "url": "https://github.com/loreum-org/loreum-token.git"
   },
   "publishConfig": {
     "access": "public",
