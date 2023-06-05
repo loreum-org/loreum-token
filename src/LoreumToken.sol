@@ -3,21 +3,7 @@ pragma solidity ^0.8.18;
 
 import { ERC20 } from "openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
 import { ERC20Permit } from "openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Permit.sol";
-import { Ownable } from "openzeppelin-contracts/contracts/access/Ownable.sol";
-
-
-//   ▄           ▄▄▄▄▄▄▄▄▄▄▄ ▄▄▄▄▄▄▄▄▄▄▄ ▄▄▄▄▄▄▄▄▄▄▄ ▄         ▄ ▄▄       ▄▄ 
-//  ▐░▌         ▐░░░░░░░░░░░▐░░░░░░░░░░░▐░░░░░░░░░░░▐░▌       ▐░▐░░▌     ▐░░▌
-//  ▐░▌         ▐░█▀▀▀▀▀▀▀█░▐░█▀▀▀▀▀▀▀█░▐░█▀▀▀▀▀▀▀▀▀▐░▌       ▐░▐░▌░▌   ▐░▐░▌
-//  ▐░▌         ▐░▌       ▐░▐░▌       ▐░▐░▌         ▐░▌       ▐░▐░▌▐░▌ ▐░▌▐░▌
-//  ▐░▌         ▐░▌       ▐░▐░█▄▄▄▄▄▄▄█░▐░█▄▄▄▄▄▄▄▄▄▐░▌       ▐░▐░▌ ▐░▐░▌ ▐░▌
-//  ▐░▌         ▐░▌       ▐░▐░░░░░░░░░░░▐░░░░░░░░░░░▐░▌       ▐░▐░▌  ▐░▌  ▐░▌
-//  ▐░▌         ▐░▌       ▐░▐░█▀▀▀▀█░█▀▀▐░█▀▀▀▀▀▀▀▀▀▐░▌       ▐░▐░▌   ▀   ▐░▌
-//  ▐░▌         ▐░▌       ▐░▐░▌     ▐░▌ ▐░▌         ▐░▌       ▐░▐░▌       ▐░▌
-//  ▐░█▄▄▄▄▄▄▄▄▄▐░█▄▄▄▄▄▄▄█░▐░▌      ▐░▌▐░█▄▄▄▄▄▄▄▄▄▐░█▄▄▄▄▄▄▄█░▐░▌       ▐░▌
-//  ▐░░░░░░░░░░░▐░░░░░░░░░░░▐░▌       ▐░▐░░░░░░░░░░░▐░░░░░░░░░░░▐░▌       ▐░▌
-//   ▀▀▀▀▀▀▀▀▀▀▀ ▀▀▀▀▀▀▀▀▀▀▀ ▀         ▀ ▀▀▀▀▀▀▀▀▀▀▀ ▀▀▀▀▀▀▀▀▀▀▀ ▀         ▀ 
-//                                                                           
+import { Ownable } from "openzeppelin-contracts/contracts/access/Ownable.sol";                                       
 
 contract LoreumToken is ERC20, ERC20Permit, Ownable {
     
@@ -52,6 +38,10 @@ contract LoreumToken is ERC20, ERC20Permit, Ownable {
     // ---------------
     //    Functions
     // ---------------
+
+    /// @notice Burns LORE tokens.
+    /// @param  amount Amount of LORE tokens to burn.
+    function burn(uint256 amount) external virtual { _burn(_msgSender(), amount); }
 
     /// @notice Mint LORE to the provided account.
     /// @param  account The address that will receive LORE.

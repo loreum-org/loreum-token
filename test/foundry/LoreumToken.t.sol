@@ -22,6 +22,10 @@ contract Deployment is Utility {
 
     }
 
+    // Events.
+
+    event Transfer(address indexed from, address indexed to, uint256 value);
+
 
     // ----------------
     //    Unit Tests
@@ -61,10 +65,61 @@ contract Deployment is Utility {
         assertEq(LORE.balanceOf(BONES), premintAmount);
 
         // mint().
+        hevm.expectEmit(true, true, false, true, address(LORE));
+        emit Transfer(address(0), premintReceiver, mintAmount);
         LORE.mint(BONES, mintAmount);
 
         // Post-state.
         assertEq(LORE.balanceOf(BONES), premintAmount + mintAmount);
+    }
+
+    // Validate burn() restrictions.
+    // Validate burn() state changes.
+
+    function test_LoreumToken_burn_restriction_account() public {
+        
+        hevm.startPrank(address(0));
+        hevm.expectRevert("ERC20: burn from the zero address");
+        LORE.burn(100 ether);
+        hevm.stopPrank();
+
+    }
+
+    function test_LoreumToken_burn_restriction_amount(uint256 burnAmount) public {
+
+        hevm.startPrank(premintReceiver);
+
+        if (burnAmount > premintAmount) {
+            hevm.expectRevert("ERC20: burn amount exceeds balance");
+            LORE.burn(burnAmount);
+        }
+        else {
+            LORE.burn(burnAmount);
+        }
+
+        hevm.stopPrank();
+
+    }
+
+    function test_LoreumToken_burn_state(uint256 burnAmount) public {
+        
+        hevm.assume(burnAmount <= premintAmount);
+
+        // Pre-state.
+        assertEq(LORE.totalSupply(), premintAmount);
+        assertEq(LORE.balanceOf(premintReceiver), premintAmount);
+
+        // burn().
+        hevm.startPrank(premintReceiver);
+        hevm.expectEmit(true, true, false, true, address(LORE));
+        emit Transfer(premintReceiver, address(0), burnAmount);
+        LORE.burn(burnAmount);
+        hevm.stopPrank();
+
+        // Post-state.
+        assertEq(LORE.totalSupply(), premintAmount - burnAmount);
+        assertEq(LORE.balanceOf(premintReceiver), premintAmount - burnAmount);
+
     }
 
 }
