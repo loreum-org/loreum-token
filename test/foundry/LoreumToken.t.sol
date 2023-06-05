@@ -116,7 +116,7 @@ contract Deployment is Utility {
 
         // Post-state.
         assertEq(LORE.totalSupply(), premintAmount - burnAmount);
-        assertEq(LORE.balanceOf(premintReceiver), premintAmount) - burnAmount;
+        assertEq(LORE.balanceOf(premintReceiver), premintAmount - burnAmount);
 
     }
 
