@@ -65,6 +65,8 @@ contract Deployment is Utility {
         assertEq(LORE.balanceOf(BONES), premintAmount);
 
         // mint().
+        hevm.expectEmit(true, true, false, true, address(LORE));
+        emit Transfer(address(0), premintReceiver, mintAmount);
         LORE.mint(BONES, mintAmount);
 
         // Post-state.
