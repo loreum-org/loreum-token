@@ -67,4 +67,19 @@ contract Deployment is Utility {
         assertEq(LORE.balanceOf(BONES), premintAmount + mintAmount);
     }
 
+    // Validate burn() restrictions.
+    // Validate burn() state changes.
+
+    function test_LoreumToken_burn_restriction_account(uint256 burnAmount) public {
+        
+    }
+
+    function test_LoreumToken_burn_restriction_amount(uint256 burnAmount) public {
+        
+    }
+
+    function test_LoreumToken_burn_state(uint256 burnAmount) public {
+        
+    }
+
 }
