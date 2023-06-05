@@ -39,6 +39,10 @@ contract LoreumToken is ERC20, ERC20Permit, Ownable {
     //    Functions
     // ---------------
 
+    /// @notice Burns LORE tokens.
+    /// @param  amount Amount of LORE tokens to burn.
+    function burn(uint256 amount) external virtual { _burn(_msgSender(), amount); }
+
     /// @notice Mint LORE to the provided account.
     /// @param  account The address that will receive LORE.
     /// @param  amount  The amount to mint.
