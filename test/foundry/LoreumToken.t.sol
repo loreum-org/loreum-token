@@ -22,6 +22,10 @@ contract Deployment is Utility {
 
     }
 
+    // Events.
+
+    event Transfer(address indexed from, address indexed to, uint256 value);
+
 
     // ----------------
     //    Unit Tests
@@ -81,7 +85,7 @@ contract Deployment is Utility {
 
     function test_LoreumToken_burn_restriction_amount(uint256 burnAmount) public {
 
-        hevm.startPrank(address(BONES));
+        hevm.startPrank(premintReceiver);
 
         if (burnAmount > premintAmount) {
             hevm.expectRevert("ERC20: burn amount exceeds balance");
@@ -97,6 +101,23 @@ contract Deployment is Utility {
 
     function test_LoreumToken_burn_state(uint256 burnAmount) public {
         
+        hevm.assume(burnAmount <= premintAmount);
+
+        // Pre-state.
+        assertEq(LORE.totalSupply(), premintAmount);
+        assertEq(LORE.balanceOf(premintReceiver), premintAmount);
+
+        // burn().
+        hevm.startPrank(premintReceiver);
+        hevm.expectEmit(true, true, false, true, address(LORE));
+        emit Transfer(premintReceiver, address(0), burnAmount);
+        LORE.burn(burnAmount);
+        hevm.stopPrank();
+
+        // Post-state.
+        assertEq(LORE.totalSupply(), premintAmount - burnAmount);
+        assertEq(LORE.balanceOf(premintReceiver), premintAmount) - burnAmount;
+
     }
 
 }
