@@ -70,12 +70,29 @@ contract Deployment is Utility {
     // Validate burn() restrictions.
     // Validate burn() state changes.
 
-    function test_LoreumToken_burn_restriction_account(uint256 burnAmount) public {
+    function test_LoreumToken_burn_restriction_account() public {
         
+        hevm.startPrank(address(0));
+        hevm.expectRevert("ERC20: burn from the zero address");
+        LORE.burn(100 ether);
+        hevm.stopPrank();
+
     }
 
     function test_LoreumToken_burn_restriction_amount(uint256 burnAmount) public {
-        
+
+        hevm.startPrank(address(BONES));
+
+        if (burnAmount > premintAmount) {
+            hevm.expectRevert("ERC20: burn amount exceeds balance");
+            LORE.burn(burnAmount);
+        }
+        else {
+            LORE.burn(burnAmount);
+        }
+
+        hevm.stopPrank();
+
     }
 
     function test_LoreumToken_burn_state(uint256 burnAmount) public {
