@@ -17,7 +17,7 @@ typechain-types
 # Hardhat files
 cache
 artifacts
-abis/
+abis
 
-# Others 
-lib
+# foundry
+out

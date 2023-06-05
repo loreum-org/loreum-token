@@ -1,49 +1,70 @@
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.13;
+// SPDX-License-Identifier: GPL-3.0-only
+pragma solidity ^0.8.18;
 
-// Test (foundry-rs) imports.
-import "forge-std/Test.sol";
+import "./Utility.sol";
 
 import { LoreumToken } from "../../src/LoreumToken.sol";
 
-import { AddressRegistry } from "../../lib/contract-utils/src/AddressRegistry.sol";
-import { TestUtilities } from "../../lib/contract-utils/src/TestUtilities.sol";
-
-
-contract Deployment is Test, AddressRegistry, TestUtilities {
+contract Deployment is Utility {
 
     LoreumToken LORE;
 
-    uint256 SUPPLY_CAP = 100_000_000 * WAD;
-    uint256 PRE_MINT   = 10_000_000 * WAD;
+    address premintReceiver = BONES;
+    uint256 premintAmount   = 1_000_000 ether;
+    uint256 maxSupply       = 10_000_000 ether;
 
-    string NAME = "Loreum Token";
-    string SYMBOL = "LORE";
+    string constant NAME = "Loreum";
+    string constant SYMBOL = "LORE";
 
     function setUp() public {
 
-        /// @dev Create the Loreum Token Contract
-        LORE = new LoreumToken(address(this), 10_000_000 * WAD, SUPPLY_CAP);
+        LORE = new LoreumToken(premintReceiver, premintAmount, maxSupply);
+
     }
+
+
+    // ----------------
+    //    Unit Tests
+    // ----------------
 
     function test_LoreumToken_init() public {
 
-        assertEq(LORE.SUPPLY_CAP(), SUPPLY_CAP);
-        assertEq(LORE.totalSupply(), PRE_MINT);
-        assertEq(LORE.balanceOf(address(this)), PRE_MINT);
+        assertEq(LORE.maxSupply(), maxSupply);
+        assertEq(LORE.totalSupply(), premintAmount);
+        assertEq(LORE.balanceOf(premintReceiver), premintAmount);
 
         assertEq(LORE.symbol(), SYMBOL);
         assertEq(LORE.name(), NAME);
     }
 
-    function test_LoreumToken_mint() public {
 
-        /// @dev Test the mint function
-        // Mint some tokens to Bones
-        assertEq(LORE.mint(BONES, 10_000 * WAD), true);
-        assertEq(LORE.balanceOf(BONES), 10_000 * WAD);
+    // Validate mint() restrictions.
+    // Validate mint() state changes.
 
-        /// NOTE Test should fail if minting more than SUPPLY_CAP
-        assertEq(LORE.mint(BONES, SUPPLY_CAP + 1), false);
-    } 
+    function test_LoreumToken_mint_restriction(uint256 mintAmount) public {
+
+        hevm.assume(mintAmount < 100_000_000 ether);
+
+        if (mintAmount > LORE.maxSupply() - LORE.totalSupply()) {
+            hevm.expectRevert("LoreumToken::mint() totalSupply() + amount > maxSupply");
+        }
+
+        LORE.mint(BONES, mintAmount);
+        
+    }
+
+    function test_LoreumToken_mint_state(uint256 mintAmount) public {
+
+        hevm.assume(mintAmount <= LORE.maxSupply() - LORE.totalSupply());
+
+        // Pre-state.
+        assertEq(LORE.balanceOf(BONES), premintAmount);
+
+        // mint().
+        LORE.mint(BONES, mintAmount);
+
+        // Post-state.
+        assertEq(LORE.balanceOf(BONES), premintAmount + mintAmount);
+    }
+
 }

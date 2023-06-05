@@ -1,5 +1,5 @@
 
-import { ethers, network } from 'hardhat'
+import { network, ethers } from 'hardhat'
 
 async function main() {
   
