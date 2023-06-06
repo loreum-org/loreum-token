@@ -90,7 +90,7 @@ contract Deployment is Utility {
         hevm.startPrank(premintReceiver);
 
         if (burnAmount > premintAmount) {
-            hevm.expectRevert("ERC20: burn amount exceeds balance");
+            hevm.expectRevert("ERC20: transfer amount exceeds balance");
             LORE.burn(burnAmount);
         }
         else {
