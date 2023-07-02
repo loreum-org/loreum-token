@@ -28,12 +28,12 @@ const config: HardhatUserConfig = {
       gasPrice: "auto",
     },
     goerli: {
-      url: process.env.GOERLI_RPC_URL || "",
-      accounts: [process.env.GOERLI_DEPLOYER_KEY || ""],
+      url: process.env.GORELI_RPC_URL || "https://alchemyapi.io/v2/your-api-key",
+      accounts: [process.env.GOERLI_DEPLOYER_KEY || "0x0000000000000000000000000000000000000000000000000000000000"],
     },
     mainnet: {
-      url: process.env.MAINNET_RPC_URL || "",
-      accounts: [process.env.MAINNET_DEPLOYER_KEY || ""],
+      url: process.env.MAINNET_RPC_URL || "https://alchemyapi.io/v2/your-api-key",
+      accounts: [process.env.MAINNET_DEPLOYER_KEY || "0x0000000000000000000000000000000000000000000000000000000000"],
     },
   },
   etherscan: {
