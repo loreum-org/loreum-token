@@ -29,11 +29,11 @@ const config: HardhatUserConfig = {
     },
     goerli: {
       url: process.env.GORELI_RPC_URL || "https://alchemyapi.io/v2/your-api-key",
-      accounts: [process.env.GOERLI_DEPLOYER_KEY || "0x0000000000000000000000000000000000000000000000000000000000"],
+      accounts: [process.env.GOERLI_DEPLOYER_KEY || "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"],
     },
     mainnet: {
       url: process.env.MAINNET_RPC_URL || "https://alchemyapi.io/v2/your-api-key",
-      accounts: [process.env.MAINNET_DEPLOYER_KEY || "0x0000000000000000000000000000000000000000000000000000000000"],
+      accounts: [process.env.MAINNET_DEPLOYER_KEY || "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"],
     },
   },
   etherscan: {
