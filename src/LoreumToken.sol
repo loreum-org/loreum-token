@@ -27,7 +27,7 @@ contract LoreumToken is ERC20, ERC20Permit, Ownable {
         address premintReceiver, 
         uint256 premintAmount, 
         uint256 _maxSupply
-    ) Ownable(_msgSender()) ERC20("Loreum", "LORE") ERC20Permit("Loreum") {
+    ) Ownable() ERC20("Loreum", "LORE") ERC20Permit("Loreum") {
         require(_maxSupply >= premintAmount, "LoreumToken::constructor() _maxSupply < premintAmount");
         _mint(premintReceiver, premintAmount);
         maxSupply = _maxSupply;
