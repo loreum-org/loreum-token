@@ -21,11 +21,10 @@ contract LoreumTokenTest is Test {
     event Transfer(address indexed from, address indexed to, uint256 value);
     event Approval(address indexed owner, address indexed spender, uint256 value);
 
-    function invarent() public {
+    function invariant() public {
         assertGe(lore.maxSupply(), lore.totalSupply());
-        uint256 allBalance = lore.balanceOf(lore.owner()) + lore.balanceOf(alice) + lore.balanceOf(bob);
+        uint256 allBalance = lore.balanceOf(address(this)) + lore.balanceOf(alice) + lore.balanceOf(bob);
         assertEq(lore.totalSupply(), allBalance);
-        assertEq(lore.owner(), address(this));
         assertEq(lore.maxSupply(), 5000);
     }
 
@@ -41,7 +40,58 @@ contract LoreumTokenTest is Test {
         assertEq(lore.totalSupply(), 1000);
         assertEq(lore.maxSupply(), 5000);
 
-        invarent();
+        invariant();
+    }
+    /**
+     * This function is to simulate and validate the ownership transfer of 'lore' contract to 'alice' 
+     * and affirm the contract's post-transfer valid state. 
+     */
+
+    function test_TransferOwnership()  public {
+        assertEq(lore.owner(),address(this));
+
+        // Transfer the contract ownership to Alice
+        vm.startPrank(lore.owner());
+        lore.transferOwnership(alice);
+        vm.stopPrank();
+
+        assertEq(lore.owner(),alice);
+
+        invariant();
+    }
+    /** 
+     * This function is to simulates a failed scenario of transferring 'lore' contract's 
+     * ownership from a non-owner 'alice' to 'bob' and validates the contract's state 
+     * after this unsuccessful attempt. 
+     */
+    function test_TransferOwnershipFail()public{
+         assertEq(lore.owner(),address(this));
+
+        // Transfer the contract ownership to Alice
+        vm.startPrank(alice);
+        vm.expectRevert("Ownable: caller is not the owner");
+        lore.transferOwnership(bob);
+        vm.stopPrank();
+
+        assertEq(lore.owner(),address(this));
+
+        invariant();
+    }
+    /**
+     * This function is to simulates the scenario of renouncing ownership of 'lore' contract and 
+     * validates that the contract's ownership is indeed null following this operation.
+     */
+    function test_TransferOwnershipToNULL()public{
+        assertEq(lore.owner(),address(this));
+
+        // Transfer the contract ownership to NULL or remove ownership
+        vm.startPrank(lore.owner());
+        lore.renounceOwnership();
+        vm.stopPrank();
+
+        assertEq(lore.owner(),address(0));
+
+        invariant();
     }
     /**
      * This function tests the minting process of the Loreum token contract. It checks successful
@@ -76,7 +126,7 @@ contract LoreumTokenTest is Test {
         assertEq(lore.balanceOf(alice), F_ownerOldBalance);
         assertEq(lore.totalSupply(), F_oldTotalSupply);
 
-        invarent();
+        invariant();
     }
     /**
      * This function tests the failure case of the minting process in the Loreum token contract.
@@ -100,7 +150,7 @@ contract LoreumTokenTest is Test {
         assertEq(lore.balanceOf(lore.owner()), ownerOldBalance);
         assertEq(lore.totalSupply(), oldTotalSupply);
 
-        invarent();
+        invariant();
     }
     /**
      * This function tests the burning process of the Loreum token contract. It checks that the
@@ -121,7 +171,7 @@ contract LoreumTokenTest is Test {
         assertEq(lore.balanceOf(lore.owner()), ownerOldBalance - amount);
         assertEq(lore.totalSupply(), oldTotalSupply - amount);
 
-        invarent();
+        invariant();
     }
     /**
      * This function tests the token transfer and burning process of the Loreum token contract.
@@ -153,7 +203,7 @@ contract LoreumTokenTest is Test {
         assertEq(lore.balanceOf(alice), aliceOldBalance - amount);
         assertEq(lore.totalSupply(), oldTotalSupply - amount);
 
-        invarent();
+        invariant();
     }
     /**
      * This function tests that the burn function reverts when Alice tries to burn more tokens than
@@ -175,7 +225,7 @@ contract LoreumTokenTest is Test {
         assertEq(lore.balanceOf(alice), aliceOldBalance);
         assertEq(lore.totalSupply(), oldTotalSupply);
 
-        invarent();
+        invariant();
     }
     /**
      * This function tests the total supply of the Loreum token contract. It checks that the total
@@ -199,7 +249,7 @@ contract LoreumTokenTest is Test {
         uint256 allBalance = lore.balanceOf(lore.owner()) + lore.balanceOf(alice) + lore.balanceOf(bob);
         assertEq(lore.totalSupply(), allBalance);
 
-        invarent();
+        invariant();
     }
     /**
      * This function tests the successful transfer of tokens from the owner to Alice in the Loreum
@@ -222,7 +272,7 @@ contract LoreumTokenTest is Test {
         assertEq(lore.balanceOf(alice), aliceOldBalance + amount);
         require(success, "transfer failed");
 
-        invarent();
+        invariant();
     }
     /**
      * This function tests the failure case of token transfer in the Loreum token contract. It
@@ -247,7 +297,7 @@ contract LoreumTokenTest is Test {
         assertEq(aliceNewBalance, aliceOldBalance);
         require(!success, "transfer success");
 
-        invarent();
+        invariant();
     }
     /**
      * This function tests the 'transferFrom' method of the Loreum token contract. It checks that
@@ -284,7 +334,7 @@ contract LoreumTokenTest is Test {
         assertEq(lore.balanceOf(alice), aliceOldBalance);
         assertEq(lore.balanceOf(bob), bobOldBalance + amount);
 
-        invarent();
+        invariant();
     }
     /**
      * This function tests the 'transferFrom' and 'increaseAllowance' methods of the Loreum token
@@ -346,6 +396,6 @@ contract LoreumTokenTest is Test {
         assertEq(lore.balanceOf(alice), S_aliceOldBalance);
         assertEq(lore.balanceOf(bob), S_bobOldBalance + 1000);
 
-        invarent();
+        invariant();
     }
 }
