@@ -10,12 +10,17 @@ contract LoreumTokenTest is Test {
     uint256 PremintAmount = 1000;
     uint256 MaxSupply = 5000;
     address alice;
+    uint256 alicePriKey;
     address bob;
+    uint256 bobPriKey;
+    address jb;
+    uint256 jbPriKey;
 
     function setUp() public {
         lore = new LoreumToken(PremintReceiver, PremintAmount, MaxSupply);
-        alice = address(1);
-        bob = address(2);
+        (alice, alicePriKey) = makeAddrAndKey("Alice");
+        (bob, bobPriKey) = makeAddrAndKey("Bob");
+        (jb, jbPriKey) = makeAddrAndKey("JB");
     }
 
     event Transfer(address indexed from, address indexed to, uint256 value);
@@ -23,7 +28,8 @@ contract LoreumTokenTest is Test {
 
     function invariant() public {
         assertGe(lore.maxSupply(), lore.totalSupply());
-        uint256 allBalance = lore.balanceOf(address(this)) + lore.balanceOf(alice) + lore.balanceOf(bob);
+        uint256 allBalance =
+            lore.balanceOf(address(this)) + lore.balanceOf(alice) + lore.balanceOf(bob) + lore.balanceOf(jb);
         assertEq(lore.totalSupply(), allBalance);
         assertEq(lore.maxSupply(), 5000);
     }
@@ -43,29 +49,30 @@ contract LoreumTokenTest is Test {
         invariant();
     }
     /**
-     * This function is to simulate and validate the ownership transfer of 'lore' contract to 'alice' 
-     * and affirm the contract's post-transfer valid state. 
+     * This function is to simulate and validate the ownership transfer of 'lore' contract to 'alice'
+     * and affirm the contract's post-transfer valid state.
      */
 
-    function test_TransferOwnership()  public {
-        assertEq(lore.owner(),address(this));
+    function test_TransferOwnership() public {
+        assertEq(lore.owner(), address(this));
 
         // Transfer the contract ownership to Alice
         vm.startPrank(lore.owner());
         lore.transferOwnership(alice);
         vm.stopPrank();
 
-        assertEq(lore.owner(),alice);
+        assertEq(lore.owner(), alice);
 
         invariant();
     }
-    /** 
-     * This function is to simulates a failed scenario of transferring 'lore' contract's 
-     * ownership from a non-owner 'alice' to 'bob' and validates the contract's state 
-     * after this unsuccessful attempt. 
+    /**
+     * This function is to simulates a failed scenario of transferring 'lore' contract's
+     * ownership from a non-owner 'alice' to 'bob' and validates the contract's state
+     * after this unsuccessful attempt.
      */
-    function test_TransferOwnershipFail()public{
-         assertEq(lore.owner(),address(this));
+
+    function test_TransferOwnershipFail() public {
+        assertEq(lore.owner(), address(this));
 
         // Transfer the contract ownership to Alice
         vm.startPrank(alice);
@@ -73,23 +80,24 @@ contract LoreumTokenTest is Test {
         lore.transferOwnership(bob);
         vm.stopPrank();
 
-        assertEq(lore.owner(),address(this));
+        assertEq(lore.owner(), address(this));
 
         invariant();
     }
     /**
-     * This function is to simulates the scenario of renouncing ownership of 'lore' contract and 
+     * This function is to simulates the scenario of renouncing ownership of 'lore' contract and
      * validates that the contract's ownership is indeed null following this operation.
      */
-    function test_TransferOwnershipToNULL()public{
-        assertEq(lore.owner(),address(this));
+
+    function test_TransferOwnershipToNULL() public {
+        assertEq(lore.owner(), address(this));
 
         // Transfer the contract ownership to NULL or remove ownership
         vm.startPrank(lore.owner());
         lore.renounceOwnership();
         vm.stopPrank();
 
-        assertEq(lore.owner(),address(0));
+        assertEq(lore.owner(), address(0));
 
         invariant();
     }
@@ -266,11 +274,11 @@ contract LoreumTokenTest is Test {
         vm.expectEmit(true, true, false, true, address(lore));
         emit Transfer(lore.owner(), alice, amount);
         bool success = lore.transfer(alice, amount);
+        require(success, "transfer failed");
         vm.stopPrank();
 
         assertEq(lore.balanceOf(lore.owner()), ownerOldBalance - amount);
         assertEq(lore.balanceOf(alice), aliceOldBalance + amount);
-        require(success, "transfer failed");
 
         invariant();
     }
@@ -395,6 +403,77 @@ contract LoreumTokenTest is Test {
         assertEq(lore.balanceOf(lore.owner()), S_ownerOldBalance - 1000);
         assertEq(lore.balanceOf(alice), S_aliceOldBalance);
         assertEq(lore.balanceOf(bob), S_bobOldBalance + 1000);
+
+        invariant();
+    }
+
+    /**
+     * This function is a test case for an ERC20 token with permit feature. It checks initial
+     * balances, performs token transfers, tests the permit function which implements a delegated
+     * transfer, and verifies the balances and allowances after each operation. It finally invokes
+     * the `invariant()` function to check certain invariant conditions.
+     */
+    function test_ERC20Permit() public {
+        assertEq(lore.balanceOf(address(this)), 1000);
+        assertEq(lore.balanceOf(alice), 0);
+        assertEq(lore.balanceOf(bob), 0);
+        assertEq(lore.balanceOf(jb), 0);
+
+        // Owner transfer 1000 token to alice
+        vm.startPrank(address(this));
+        vm.expectEmit(true, true, false, true, address(lore));
+        emit Transfer(lore.owner(), alice, 1000);
+        bool success = lore.transfer(alice, 1000);
+        require(success, "Transfer Failed!");
+        vm.stopPrank();
+
+        assertEq(lore.balanceOf(address(this)), 0);
+        assertEq(lore.balanceOf(alice), 1000);
+        assertEq(lore.balanceOf(bob), 0);
+        assertEq(lore.balanceOf(jb), 0);
+
+        assertEq(lore.allowance(alice, bob), 0);
+
+        // Encodes the permit data to EIP712 specifications, signs it and calls the permit function
+        bytes32 domainHash = keccak256(
+            abi.encode(
+                keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"),
+                keccak256(bytes(lore.name())),
+                keccak256(bytes("1")),
+                block.chainid,
+                lore
+            )
+        );
+        bytes32 hashStruct = keccak256(
+            abi.encode(
+                keccak256("Permit(address owner,address spender,uint256 value,uint256 nonce,uint256 deadline)"),
+                alice,
+                bob,
+                500,
+                lore.nonces(alice),
+                (block.timestamp + 60)
+            )
+        );
+        bytes32 hash = keccak256(abi.encodePacked(uint16(0x1901), domainHash, hashStruct));
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(alicePriKey, hash);
+        lore.permit(alice, bob, 500, (block.timestamp + 60), v, r, s);
+
+        assertEq(lore.allowance(alice, bob), 500);
+
+        // Starts another token transfer prank, but this time, it's bob transferring from alice to jb
+        vm.startPrank(bob);
+        vm.expectEmit(true, true, false, true, address(lore));
+        emit Transfer(alice, jb, 500);
+        bool success1 = lore.transferFrom(alice, jb, 500);
+        require(success1, "Transfer Fail");
+        vm.stopPrank();
+
+        assertEq(lore.balanceOf(address(this)), 0);
+        assertEq(lore.balanceOf(alice), 500);
+        assertEq(lore.balanceOf(bob), 0);
+        assertEq(lore.balanceOf(jb), 500);
+
+        assertEq(lore.allowance(alice, bob), 0);
 
         invariant();
     }
