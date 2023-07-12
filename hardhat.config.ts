@@ -82,8 +82,8 @@ const config: HardhatUserConfig = {
     }),
   },
   paths: {
-    sources: "./src/",
-    tests: "./test",
+    sources: "./contracts",
+    tests: "./tests",
     cache: "./cache",
     artifacts: "./artifacts",
   },
@@ -93,7 +93,7 @@ const config: HardhatUserConfig = {
     clear: true,
     flat: true,
     pretty: false,
-    except: ["test*", "open-zeppelin*", "uniswap*"],
+    except: ["tests*", "openzeppelin-contracts*"]
   },
 };
 
