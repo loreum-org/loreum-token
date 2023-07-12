@@ -3,7 +3,7 @@ pragma solidity ^0.8.18;
 
 import "./Utility.sol";
 
-import { LoreumToken } from "../src/LoreumToken.sol";
+import { LoreumToken } from "contracts/LoreumToken.sol";
 
 contract Deployment is Utility {
 
