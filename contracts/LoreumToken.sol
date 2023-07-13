@@ -41,7 +41,7 @@ contract LoreumToken is ERC20, ERC20Permit, Ownable {
     }
 
     /**************************************************
-        Chamber State Variables
+        Functions
      **************************************************/
 
     /**
