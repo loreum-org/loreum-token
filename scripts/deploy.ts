@@ -8,6 +8,8 @@ async function main() {
   switch (network) {
     case "unknown":
       return deployLocalhost();
+    case "homestead":
+      return deployLocalhost();
   }
 }
 

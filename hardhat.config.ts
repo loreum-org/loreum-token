@@ -1,3 +1,5 @@
+import "dotenv/config";
+
 import type { HardhatUserConfig } from "hardhat/types";
 import fs from "fs";
 
@@ -6,15 +8,13 @@ import "@typechain/hardhat";
 import "hardhat-abi-exporter";
 import "@nomiclabs/hardhat-ethers";
 import "hardhat-preprocessor";
-import "dotenv/config";
-
 
 const config: HardhatUserConfig = {
   defaultNetwork: "hardhat",
   networks: {
     hardhat: {
       allowUnlimitedContractSize: false,
-      hardfork: "london", // Berlin is used (temporarily) to avoid issues with coverage
+      hardfork: "berlin",
       mining: {
         mempool: {
           order: "fifo"
@@ -22,18 +22,16 @@ const config: HardhatUserConfig = {
         auto: true,
         interval: 50000,
       },
-      // forking: {
-      //   url: process.env.MAINNET_RPC_URL || "",
-      // },
       gasPrice: "auto",
     },
-    goerli: {
-      url: process.env.GORELI_RPC_URL || "https://alchemyapi.io/v2/your-api-key",
-      accounts: [process.env.GOERLI_DEPLOYER_KEY || "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"],
+    tenderly: {
+      chainId: 1,
+      url: `https://rpc.tenderly.co/fork/${process.env.TENDERLY_FORK_ID}`,
+      accounts: [process.env.TENDERLY_DEPLOYER_KEY as string ?? 'TENDERLY_DEPLOYER_KEY'],
     },
     mainnet: {
       url: process.env.MAINNET_RPC_URL || "https://alchemyapi.io/v2/your-api-key",
-      accounts: [process.env.MAINNET_DEPLOYER_KEY || "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"],
+      accounts: [process.env.MAINNET_DEPLOYER_KEY as string ?? 'MAINNET_DEPLOYER_KEY'],
     },
   },
   etherscan: {

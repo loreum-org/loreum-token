@@ -31,9 +31,9 @@
     "setup": "git submodule update --init --recursive",
     "chain": "hardhat node",
     "compile": "hardhat compile",
-    "deploy": "npx hardhat run --network localhost scripts/deploy.ts",
-    "deploy:goerli": "npx hardhat run --network goerli scripts/deploy.ts",
-    "deploy:mainnet": "npx hardhat run --network mainnet scripts/deploy.ts",
+    "deploy": "npx hardhat run scripts/deploy.ts --network localhost ",
+    "deploy:tenderly": "npx hardhat run scripts/deploy.ts --network tenderly ",
+    "deploy:mainnet": "npx hardhat run scripts/deploy.ts --network mainnet ",
     "test": "forge test"
   },
   "devDependencies": {
