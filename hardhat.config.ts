@@ -26,17 +26,23 @@ const config: HardhatUserConfig = {
     },
     tenderly: {
       chainId: 1,
+      hardfork: "berlin",
       url: `https://rpc.tenderly.co/fork/${process.env.TENDERLY_FORK_ID}`,
       accounts: [process.env.TENDERLY_DEPLOYER_KEY as string ?? 'TENDERLY_DEPLOYER_KEY'],
     },
+    sepolia: {
+      chainId: 11155111,
+      url: "https://rpc.ankr.com/eth_sepolia",
+      accounts: [process.env.SEPOLIA_DEPLOYER_KEY as string ?? 'SEPOLIA_DEPLOYER_KEY'],
+    },
     mainnet: {
-      url: process.env.MAINNET_RPC_URL || "https://alchemyapi.io/v2/your-api-key",
+      url: process.env.MAINNET_RPC_URL || "https://rpc.ankr.com/eth",
       accounts: [process.env.MAINNET_DEPLOYER_KEY as string ?? 'MAINNET_DEPLOYER_KEY'],
     },
   },
   etherscan: {
     apiKey: {
-      goerli: process.env.ETHERSCAN_API_KEY || "",
+      sepolia: process.env.ETHERSCAN_API_KEY || "",
       mainnet: process.env.ETHERSCAN_API_KEY || "",
     },
   },
