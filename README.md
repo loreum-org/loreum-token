@@ -25,31 +25,12 @@ npm run deploy
 
 ```
 
-**Verifying Contracts**
-https://hardhat.org/hardhat-runner/docs/guides/verifying
-
-```
-npx hardhat verify --network goerli <address> <unlock time>
-```
-
 ### Deployments
 
-**Goerli**
+**Mainnet**
 
+Address: `0x7756D245527F5f8925A537be509BF54feb2FdC99`
 ```
-npx hardhat verify --network goerli 0xDB0072e4741624cBE881579aaA6425F8a8C85F5e
- 0xA9bF0E34859870cF14102dC6894a7B2AC3ceDf83 10000000000000000000000000 1000000000000000000000000000 
-Generating typings for: 7 artifacts in dir: typechain-types for target: ethers-v5
-Successfully generated 32 typings!
-Compiled 7 Solidity files successfully
-Compiling your contract excluding unrelated contracts did not produce identical bytecode.
-Trying again with the full solc input used to compile and deploy it.
-This means that unrelated contracts may be displayed on Etherscan...
-
-Successfully submitted source code for contract
-src/LoreumToken.sol:LoreumToken at 0xDB0072e4741624cBE881579aaA6425F8a8C85F5e
-for verification on the block explorer. Waiting for verification result...
-
-Successfully verified full build of contract LoreumToken on Etherscan.
-https://goerli.etherscan.io/address/0xDB0072e4741624cBE881579aaA6425F8a8C85F5e#code
+npx hardhat verify --network mainnet 0x7756D245527F5f8925A537be509BF54feb2FdC99
+ 0x5d45A213B2B6259F0b3c116a8907B56AB5E22095 3000000000000000000000000 100000000000000000000000000 
 ```
