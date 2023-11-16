@@ -50,7 +50,7 @@ Each of these 10 founders will recieve `300,000` LORE tokens as a reward for see
 | Danny             | `0x8AF8aBedF0aD11A98Fc009057f3E21c8B4Ef225a` |
 | Johnny            | `0x00A08649c1405861D024075DD41674BBcD99379C` |
 | Hurricane         | `0x3b1848cAe59b946dce96e75587A7CB41dEbae598` |
-| Captain Jack      | `0x96098B56DE318d34E35CC42f9556f72AF3A41a6F` |
+| Captain Jack      | `0xB3Fc4E7Ed8f0Be134674e8209b44bB66a2D0061C` |
 | Blackbeard        | `0x707bAE54593FFa8c08B21e6a600fB2b73BD2Aee4` |
 | Shifty            | `0x64A5b19177F3F6AE2C546b4d63C31D60e6D03Ce4` |
 | Wild Bill         | `0xf9F435283D32171D78732980d71D355903748d92` |
