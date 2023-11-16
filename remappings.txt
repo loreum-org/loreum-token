@@ -2,4 +2,3 @@
 ds-test/=modules/forge-std/lib/ds-test/src/
 forge-std/=modules/forge-std/
 openzeppelin-contracts/=modules/openzeppelin-contracts/
-contracts/=contracts
