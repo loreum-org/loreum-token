@@ -60,4 +60,4 @@ Each of these 10 founders will recieve `300,000` LORE tokens as a reward for see
 The LORE token has Mint and Burn functionality. These function will be handled directly from the 
 Treasury Multisig `0x5d45A213B2B6259F0b3c116a8907B56AB5E22095` until the deployment of the Loreum Chamber.
 Afterwards, it will then be entirely controlled via free-market governance. Governance proposals and
-management of the DAO happens at https://dao.loreum.org.
+management of the DAO happens at https://dao.loreum.org

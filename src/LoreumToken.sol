@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0-only
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.24;
 
-import { ERC20 } from "openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
-import { ERC20Permit } from "openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Permit.sol";
-import { Ownable } from "openzeppelin-contracts/contracts/access/Ownable.sol";                                       
+import { ERC20 } from "lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
+import { ERC20Permit } from "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Permit.sol";
+import { Ownable } from "lib/openzeppelin-contracts/contracts/access/Ownable.sol";                                       
 
 contract LoreumToken is ERC20, ERC20Permit, Ownable {
     
@@ -34,7 +34,7 @@ contract LoreumToken is ERC20, ERC20Permit, Ownable {
         address premintReceiver, 
         uint256 premintAmount, 
         uint256 _maxSupply
-    ) Ownable() ERC20("Loreum", "LORE") ERC20Permit("Loreum") {
+    ) Ownable() ERC20("LUSD", "Loreum USD") ERC20Permit("Loreum USD") {
         require(_maxSupply >= premintAmount, "LoreumToken::constructor() _maxSupply < premintAmount");
         _mint(premintReceiver, premintAmount);
         maxSupply = _maxSupply;
