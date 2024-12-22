@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0-only
 pragma solidity ^0.8.18;
 
-import "./Utility.sol";
+import "test/Utility.sol";
 
-import { LoreumToken } from "contracts/LoreumToken.sol";
+import { LoreumToken } from "src/LoreumToken.sol";
 
 contract Deployment is Utility {
 

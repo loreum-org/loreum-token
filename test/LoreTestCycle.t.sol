@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
-import {LoreumToken} from "contracts/LoreumToken.sol";
-import {Test, console} from "modules/forge-std/src/Test.sol";
+import {LoreumToken} from "src/LoreumToken.sol";
+import {Test, console} from "lib/forge-std/src/Test.sol";
 
 contract LoreumTokenTest is Test {
     LoreumToken lore;
