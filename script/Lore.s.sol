@@ -2,32 +2,25 @@
 pragma solidity ^0.8.20;
 
 import {Script} from "lib/forge-std/src/Script.sol";
-import {LoreumToken} from "src/LoreumToken.sol";
+import {LORE} from "src/LORE.sol";
+import {BaseActors, SepoliaActors, TestActors} from "script/Actors.sol";
+import {Constants} from "script/Constants.sol";
 
-contract DeployLoreumToken is Script {
-
-    address premintReceiver;
+contract DeployLORE is Script {
+    address owner;
 
     function run() external {
         if (block.chainid == 8453) {
-            
             // loreum base multisig
-            premintReceiver = 0x61ED082106cF5DF1b05Eb0D67216B3F73CbA2DB4;
+            owner = BaseActors.OWNER;
+        } else if (block.chainid == 11155111) {
+            owner = SepoliaActors.OWNER;
+        } else {
+            owner = TestActors.OWNER;
         }
-
-        if (block.chainid == 11155111) {
-
-            premintReceiver = 0x345F273fAE2CeC49e944BFBEf4899fA1625803C5;
-        }
-
-        uint256 premintAmount = 3_000_000 * 10 ** 18;
-        uint256 maxSupply = 100_000_000 * 10 ** 18;
 
         vm.startBroadcast();
-        new LoreumToken(premintReceiver, premintAmount, maxSupply);
+        new LORE(Constants.MAX_SUPPLY, owner);
         vm.stopBroadcast();
-        
-
-
     }
 }

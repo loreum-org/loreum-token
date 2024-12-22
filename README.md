@@ -1,63 +1,68 @@
-## The LORE Token
+# LORE Token
 
-`npm i`
+LORE is an ERC20 token with a fixed maximum supply, designed to be used within the Loreum ecosystem. This README provides an overview of the LORE token contract and its associated components.
 
-`git submodule update --init --recursive`
+## Contract Overview
 
-### Foundry
-```
-forge build
-forge test --verbosity -vvv
-```
+### LORE.sol
 
-### Hardhat
+The `LORE` contract is an ERC20 token with additional functionality provided by the ERC20Permit extension. The contract includes the following key features:
 
+- **Maximum Supply**: The maximum number of tokens that can ever be minted is defined at deployment and stored in the `maxSupply` state variable.
+- **Constructor**: The constructor mints the initial supply of tokens to the specified owner address and sets the maximum supply.
 
-```
-# Compiles Solidity and Builds typechain bindings
-npm run compile
+#### Constructor Parameters
 
-# Start a local hardhat node for testing
-npm run chain
+- `_maxSupply`: The maximum supply that this token can ever reach.
+- `_owner`: The initial owner of the contract who receives the minted tokens.
 
-# In a new Terminal, deploy contracts
-npm run deploy
+### Constants.sol
 
-```
+The `Constants` library defines several constant values used throughout the LORE token ecosystem:
 
-### Deployments
+- `SYMBOL`: The symbol of the token ("LORE").
+- `NAME`: The name of the token ("Loreum").
+- `MAX_SUPPLY`: The maximum supply of the token (100,000,000 LORE).
 
-**Mainnet**
+### Actors.sol
 
-Address: `0x7756D245527F5f8925A537be509BF54feb2FdC99`
-```
-npx hardhat verify --network mainnet 0x7756D245527F5f8925A537be509BF54feb2FdC99
- 0x5d45A213B2B6259F0b3c116a8907B56AB5E22095 3000000000000000000000000 100000000000000000000000000 
-```
+The `Actors` library defines several constant addresses used for different deployment environments:
 
-### Tokenomics
+- `BaseActors.OWNER`: The owner address for the base deployment.
+- `SepoliaActors.OWNER`: The owner address for the Sepolia testnet deployment.
+- `TestActors.OWNER`: The owner address for testing purposes.
 
-The maximum supply of LORE tokens that can be minted is `100,000,000`. Initially, `3,000,000` tokens
-were minted and sent to the treasury. These tokens will be airdropped to the early founders of the project
-who each supplied 1000 USDT to seed the treasury with capital to cover day to day expenses of the DAO.
+### DeployLORE.sol
 
-There were a total of 10 initial investors in the DAO who supplied a total of 10k USDT.
-Each of these 10 founders will recieve `300,000` LORE tokens as a reward for seeding the DAO treasury.
+The `DeployLORE` contract is a deployment script that initializes the LORE token contract with the appropriate owner address based on the current blockchain network:
 
-| Handle            | Address                                    |
-|-------------------|--------------------------------------------|
-| Bones             | `0xE6fB99a9977E92d0608a7DD74795a7EFfb455611` |
-| Danny             | `0x8AF8aBedF0aD11A98Fc009057f3E21c8B4Ef225a` |
-| Johnny            | `0x00A08649c1405861D024075DD41674BBcD99379C` |
-| Hurricane         | `0x3b1848cAe59b946dce96e75587A7CB41dEbae598` |
-| Captain Jack      | `0xB3Fc4E7Ed8f0Be134674e8209b44bB66a2D0061C` |
-| Blackbeard        | `0x707bAE54593FFa8c08B21e6a600fB2b73BD2Aee4` |
-| Shifty            | `0x64A5b19177F3F6AE2C546b4d63C31D60e6D03Ce4` |
-| Wild Bill         | `0xf9F435283D32171D78732980d71D355903748d92` |
-| Xcessive Overlord |                                            |
-| JP                |                                            |
+- If the network is the base network (chain ID 8453), the owner is set to `BaseActors.OWNER`.
+- If the network is the Sepolia testnet (chain ID 11155111), the owner is set to `SepoliaActors.OWNER`.
+- For all other networks, the owner is set to `TestActors.OWNER`.
 
-The LORE token has Mint and Burn functionality. These function will be handled directly from the 
-Treasury Multisig `0x5d45A213B2B6259F0b3c116a8907B56AB5E22095` until the deployment of the Loreum Chamber.
-Afterwards, it will then be entirely controlled via free-market governance. Governance proposals and
-management of the DAO happens at https://dao.loreum.org
+### LoreumToken.t.sol
+
+The `LoreumTokenTests` contract contains unit tests for the LORE token contract, verifying its initialization and basic properties:
+
+- `test_LoreumToken_init`: Tests the initial state of the LORE token contract, including the maximum supply, total supply, owner's balance, symbol, and name.
+
+### LoreTestCycle.t.sol
+
+The `LoreumLifecycleTest` contract contains additional tests for the LORE token contract, including:
+
+- `test_Basic`: Tests the basic properties of the LORE token contract.
+- `test_TotalSupplyEqualToAllBalance`: Tests that the total supply equals the sum of all individual balances before and after a token transfer.
+- `test_TokenTransferSuccess`: Tests the successful transfer of tokens from the owner to another address.
+- `test_TokenTransferFail`: Tests the failure case of token transfer when the transfer amount exceeds the owner's balance.
+- `test_transferFrom`: Tests the `transferFrom` method, verifying that an approved address can transfer tokens on behalf of the owner.
+
+## Usage
+
+To deploy and interact with the LORE token contract, follow these steps:
+
+1. Deploy the `LORE` contract using the `DeployLORE` script.
+2. Use the deployed contract's methods to transfer tokens, approve allowances, and check balances.
+
+## License
+
+The LORE token contract and associated components are licensed under the MIT License and GPL-3.0-only License.
